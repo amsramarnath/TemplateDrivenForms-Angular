@@ -1,0 +1,97 @@
+<!--
+
+     #firstName="ngModel" 
+                -- firstName is the template variable for the ngModel
+     #f="ngForm"
+                -- f is the template variable for the ngForm
+
+    #contact="ngModelGroup"
+                 -- contact like a class and firstname is like a varibale
+
+    Form control represents one input field
+    Form Group represents a group of input fields
+
+    ngModel will create an instance of the formcontrol object.
+
+-->
+
+<form #f="ngForm" (ngSubmit)="submit(f)">
+
+    <div ngModelGroup="contact" #contact="ngModelGroup">
+
+
+        <!-- Input Field -->
+        <div class="form-group">
+
+            <label for="firstName">First Name</label>
+            <input 
+            required 
+            minlength="3"
+            maxlength="10"
+            pattern="amar"
+            ngModel 
+            name="firstName" 
+            #firstName="ngModel" (change)="log(firstName)"
+            id="firstName" type="text" class="form-control validInput">
+    
+            <div class="alert alert-danger" 
+                *ngIf="firstName.touched && !firstName.valid">
+                <div *ngIf="firstName.errors.required">
+                    First name is required.</div>
+                <div *ngIf="firstName.errors.minlength">
+                    First name should be minimum of {{firstName.errors.minlength.requiredLength}} characters.</div>
+                <div *ngIf="firstName.errors.pattern">
+                    First name doesn't match the pattern.</div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Radio button -->
+    
+    <div *ngFor ="let gender of genderArray" class="radio">
+        <label for="">
+             <input type="radio" ngModel name="gender" [value]="gender.id">{{ gender.name}} 
+        </label>
+    </div>
+
+    <!-- Text Area -->
+
+    <div class="form-group">
+        <label for="comment">Comment</label>
+        <textarea ngModel name="comment"  id="comment" cols="30" rows="5" class="form-control">
+
+        </textarea>
+    </div>
+
+    <!-- Checkbox -->
+
+    <div class="checkbox">
+        <label>
+            <input type="checkbox" ngModel name="isSubscribe"> Subscribe to mailing list
+        </label>
+    </div>
+
+    <!-- Drop down List -->
+
+    <div class="form-group">
+        <label for="contactMethod">Contact Method</label>
+        <select ngModel name="contactMethod" id="contactMethod" class="form-control">
+            <option value=""></option>
+            <option *ngFor = "let contact of contactMethods" [value] = "contact.id"> {{contact.name}} </option>
+            <!-- <option *ngFor = "let contact of contactMethods" [ngValue] = "contact"> {{contact.name}} </option> -->
+        </select>
+    </div>
+
+    <p>
+        {{ f.value | json }}
+    </p>
+
+    <button class="btn btn-primary" [disabled]="!f.valid">Submit</button>
+
+    
+    <!-- 
+        TODO: Uncomment the below button and commne the the abobe button to check the submit(f) "if condition clause"
+        
+        <button class="btn btn-primary" [disabled]="!f.valid">Submit</button>  -->
+</form>
